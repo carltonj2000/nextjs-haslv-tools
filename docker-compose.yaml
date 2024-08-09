@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:4.4
+    command: --dbpath /srv/mongodb/db0 --replSet rs0 --bind_ip 0.0.0.0
+    ports:
+      - 27017:27017
+    volumes:
+      - /media/renderws/carltonData/cj2024/haslv/mongodata/202408_06Aug/data/v4p4:/srv/mongodb/db0
+      - /media/renderws/carltonData/cj2024/haslv/mongodata/202408_06Aug/seed:/mongodb/
