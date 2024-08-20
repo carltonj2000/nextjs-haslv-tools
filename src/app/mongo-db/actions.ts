@@ -42,7 +42,7 @@ export const getStripe = async () => {
   );
 
   if (errors.length) console.log({ errors });
-  else console.log(table[0].join(","));
+
   const result = table
     .slice(1)
     .map((r) => ({ name: r[3], amount: r[6], date: r[4], email: r[2] }));
