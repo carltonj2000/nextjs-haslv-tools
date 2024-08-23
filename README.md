@@ -3,6 +3,7 @@
 - To Run Locally
   - start Mongo DB as described in the section below
   - start the dev server via `npm run dev`
+  - start container via `docker compose up -d <service>`
 
 ## Mongo DB Local Start
 
@@ -20,20 +21,13 @@
         - execute `quit()`
       - run `mongorestore /mongodb/dump` restore old dump
 
+## Postgres And Adminer
+
+For local Adminer access use postgres for the username, db and machine.
+Adminer provides a Web GUI access to the postgres.
+
+Commands
+
+- `npm run db:migrate -- -u 1` run migration 1
+
 ## Notes To Be Ignored Below
-
-passport.use(new LocalStrategy(function verify(username, password, cb) {
-db.get('SELECT \* FROM users WHERE username = ?', [ username ], function(err, row) {
-if (err) { return cb(err); }
-if (!row) { return cb(null, false, { message: 'Incorrect username or password.' }); }
-
-    crypto.pbkdf2(password, row.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
-      if (err) { return cb(err); }
-      if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
-        return cb(null, false, { message: 'Incorrect username or password.' });
-      }
-      return cb(null, row);
-    });
-
-});
-}));

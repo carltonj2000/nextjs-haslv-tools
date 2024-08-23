@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migrate": "tsx scripts/db/migrate.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -16,11 +17,15 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "kysely": "^0.27.4",
     "lucide-react": "^0.424.0",
+    "minimist": "^1.2.8",
     "mongoose": "^8.5.2",
     "next": "14.2.5",
     "passport": "^0.7.0",
     "passport-local-mongoose": "^8.0.0",
+    "pg": "^8.12.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
@@ -29,13 +34,16 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/minimist": "^1.2.5",
     "@types/node": "^20",
+    "@types/pg": "^8.11.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.17.0",
     "typescript": "^5"
   }
 }

@@ -25,17 +25,22 @@ export const getUsers = async () => {
 };
 
 export const loginUser = async (currentState: any, formData: FormData) => {
-  console.log({ currentState, formData });
   const username = formData.get("username")?.toString();
   const password = formData.get("password")?.toString();
-  if (!formData || !username || !password)
-    return console.log({ error: "Login data not found" });
+  if (!formData || !username || !password) {
+    const msg = { err: "Login data incomplete" };
+    console.log(msg);
+    return msg;
+  }
 
-  console.log({ username, password });
   await dbConnect();
   const result = await User.findOne({ username }, ["username", "hash", "salt"]);
-  const hash = await hashPassword(password, result.salt);
-  console.log({ result, hash });
+  let hash = "";
+  try {
+    hash = await hashPassword(password, result.salt);
+  } catch (error) {
+    return { err: "error hashing password", error };
+  }
   if (hash === result.hash) return { username };
   return { err: "invalid credentials" };
 };

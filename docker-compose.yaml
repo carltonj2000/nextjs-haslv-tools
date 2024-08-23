@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   mongo:
     image: mongo:4.4
@@ -9,3 +7,16 @@ services:
     volumes:
       - /media/renderws/carltonData/cj2024/haslv/mongodata/202408_06Aug/data/v4p4:/srv/mongodb/db0
       - /media/renderws/carltonData/cj2024/haslv/mongodata/202408_06Aug/seed:/mongodb/
+  postgres:
+    image: postgres:16.4
+    volumes:
+      - /media/renderws/carltonData/cj2024/haslv/postgresdata/202408_20Aug/data/v16p4:/var/lib/postgresql/data
+      - /media/renderws/carltonData/cj2024/haslv/postgresdata/202408_20Aug/seed:/postgres/seed
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
