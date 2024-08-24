@@ -3,8 +3,27 @@ import dbConnect from "@/lib/dbConnect";
 import User from "@/db/models/user";
 import crypto from "crypto";
 
-export const getUsers = async () => {
+export type getUsersT =
+  | {
+      err: 0;
+      summary: {
+        id: any;
+        username: any;
+        salt: any;
+        hash: any;
+        email: any;
+      }[];
+    }
+  | {
+      err: 1;
+      msg: string;
+    };
+
+export const getUsers = async (): Promise<getUsersT> => {
   await dbConnect();
+  if (!global.mongoose || !global.mongoose.conn)
+    return { err: 1, msg: "Failed to connect to DB!" };
+
   const results = await User.find({}, [
     "username",
     "hash",
@@ -20,17 +39,24 @@ export const getUsers = async () => {
     hash,
     email,
   }));
-  console.log({ results: results[0], summary: summary[0] });
-  return summary.slice(0);
+  return { err: 0, summary: summary.slice(0) };
 };
 
-export const loginUser = async (currentState: any, formData: FormData) => {
+type loginUserT =
+  | { err: 0; username: string }
+  | { err: 1; error: string }
+  | { err: 2; error: any };
+
+export const loginUser = async (
+  currentState: any,
+  formData: FormData
+): Promise<loginUserT> => {
   const username = formData.get("username")?.toString();
   const password = formData.get("password")?.toString();
   if (!formData || !username || !password) {
     const msg = { err: "Login data incomplete" };
     console.log(msg);
-    return msg;
+    return { err: 1, error: msg.err };
   }
 
   await dbConnect();
@@ -39,10 +65,10 @@ export const loginUser = async (currentState: any, formData: FormData) => {
   try {
     hash = await hashPassword(password, result.salt);
   } catch (error) {
-    return { err: "error hashing password", error };
+    return { err: 1, error: "error hashing password" };
   }
-  if (hash === result.hash) return { username };
-  return { err: "invalid credentials" };
+  if (hash === result.hash) return { err: 0, username };
+  return { err: 1, error: "invalid credentials" };
 };
 
 function hashPassword(password: string, salt: string): Promise<string> {

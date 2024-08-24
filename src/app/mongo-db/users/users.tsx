@@ -14,22 +14,26 @@ export default function Users() {
           <Button type="submit">Get Users</Button>
         </form>
       </div>
-      <div className="flex flex-row items-start gap-3">
-        <table className="border">
-          <tbody>
-            {users?.map((u, i) => {
-              return (
-                <tr key={i}>
-                  <td>{u.username}</td>
-                  <td>{u.email}</td>
-                  <td>{u.salt}</td>
-                  <td>{u.hash}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      {users && !users.err && (
+        <div className="flex flex-row items-start gap-3">
+          <p>Total: {users.summary.length}</p>
+          <table className="border">
+            <tbody>
+              {users.summary.map((u, i) => {
+                return (
+                  <tr key={i}>
+                    <td>{u.username}</td>
+                    <td>{u.email}</td>
+                    <td>{u.salt}</td>
+                    <td>{u.hash}</td>
+                  </tr>
+                );
+              })}
+              ;
+            </tbody>
+          </table>
+        </div>
+      )}
     </main>
   );
 }

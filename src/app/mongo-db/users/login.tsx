@@ -14,8 +14,8 @@ export default function Users() {
         <input type="password" name="password" />
         <Button type="submit">Login</Button>
       </form>
-      {user && user.err && <p>{user.err}</p>}
-      {user && user.username && <p>{user.username}</p>}
+      {user && user.err != 0 && <p>{user.error}</p>}
+      {user && user.err === 0 && <p>{user.username}</p>}
     </>
   );
 }

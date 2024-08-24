@@ -9,7 +9,9 @@ const initialStripers = null;
 
 export default function Hmembers() {
   const [hmembers, hmembersAction] = useFormState(getHmembers, initialHmembers);
-  console.log(hmembers ? hmembers[0] : "No hmembers yet");
+  console.log(
+    hmembers ? !hmembers.err && hmembers.summary[0] : "No hmembers yet"
+  );
   const [stripers, stripersAction] = useFormState(getStripe, initialStripers);
   return (
     <main>
@@ -24,30 +26,36 @@ export default function Hmembers() {
       <div className="flex flex-row items-start gap-3">
         <table className="border">
           <tbody>
-            {stripers?.map((s, i) => {
-              return (
-                <tr key={i}>
-                  <td>{s.name}</td>
-                  <td>{s.amount}</td>
-                  <td>{format(s.date, "yyyy-MM-dd")}</td>
-                  <td>{s.email}</td>
-                </tr>
-              );
-            })}
+            {stripers &&
+              !stripers.err &&
+              stripers.data.map((s, i) => {
+                return (
+                  <tr key={i}>
+                    <td>{s.name}</td>
+                    <td>{s.amount}</td>
+                    <td>{format(s.date, "yyyy-MM-dd")}</td>
+                    <td>{s.email}</td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
         <table className="border">
           <tbody>
-            {hmembers?.map((hm, i) => {
-              return (
-                <tr key={i}>
-                  <td>{hm.firstName}</td>
-                  <td>{hm.lastName}</td>
-                  <td>{format(new Date(hm.waiverTimestamp), "yyyy-MM-dd")}</td>
-                  <td>{hm.email}</td>
-                </tr>
-              );
-            })}
+            {hmembers &&
+              !hmembers.err &&
+              hmembers.summary?.map((hm, i) => {
+                return (
+                  <tr key={i}>
+                    <td>{hm.firstName}</td>
+                    <td>{hm.lastName}</td>
+                    <td>
+                      {format(new Date(hm.waiverTimestamp), "yyyy-MM-dd")}
+                    </td>
+                    <td>{hm.email}</td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>
